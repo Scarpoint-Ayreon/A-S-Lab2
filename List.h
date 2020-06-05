@@ -28,7 +28,7 @@ public:
 	bool isEmpty(); 
 
 
-	int find_last(List<T>& search); // Compare 2 lists. Get first element (bigger list, not in ()) index where match starts, or get -1 if there is no match. 
+	int search_lastest(List<T>& search);         // Compare 2 lists. Get first element (bigger list, not in ()) index where Comparison starts, or get -1 if there is no Comparison. 
 private:
 
 
@@ -37,14 +37,14 @@ private:
 	{
 	public:
 		Node* pNext;                        // Next element 
-		Node* pPrevious;                    // Previous element 
+		Node* pPrev;                    // pPrev element 
 		T data;
 
-		Node(T data = T(), Node* pNext = nullptr, Node* pPrevious = nullptr)               // By default
+		Node(T data = T(), Node* pNext = nullptr, Node* pPrev = nullptr)               // By default
 		{
 			this->data = data;
 			this->pNext = pNext;
-			this->pPrevious = pPrevious;
+			this->pPrev = pPrev;
 		}
 	};
 	int Size;                           
@@ -57,7 +57,7 @@ template<typename T>
 List<T>::List()                // Constructor
 {
 	Size = 0;                  // when just created, list size is always 0
-	head = nullptr;            // by default, next and previous pointers are nullptr
+	head = nullptr;            // by default, next and prev pointers are nullptr
 	tail = nullptr;
 }
 
@@ -101,7 +101,7 @@ void List<T>::push_back(T data)
 	{
 		Node<T>* temp = new Node<T>(data);
 		temp->pNext = nullptr;
-		temp->pPrevious = tail;
+		temp->pPrev = tail;
 		tail->pNext = temp;
 		tail = temp;
 	}
@@ -130,23 +130,23 @@ void List<T>::insert(T data, int index)
 			throw exception("Index (insert(data, index)) is negative");
 		if (index > Size)
 			throw exception("Index (insert(data, index)) is bigger than list size + 1");
-		Node<T>* previous = this->head;
+		Node<T>* pPrev = this->head;
 		Node<T>* nex = this->head;
 		for (int i = 0; i < index - 1; i++)
 		{
-			previous = previous->pNext;
+			pPrev = pPrev->pNext;
 			nex = nex->pNext;
 		}
-		Node<T>* newNode = new Node<T>(data, previous->pNext);
-		previous->pNext = newNode;
+		Node<T>* newNode = new Node<T>(data, pPrev->pNext);
+		pPrev->pNext = newNode;
 
 		nex = nex->pNext;
-		nex->pPrevious = previous;
+		nex->pPrev = pPrev;
 		if (index != Size)
 		{
-			previous = previous->pNext;
+			pPrev = pPrev->pNext;
 			nex = nex->pNext;
-			nex->pPrevious = previous;
+			nex->pPrev = pPrev;
 		}
 		else
 			tail = nex;
@@ -175,18 +175,18 @@ void List<T>::removeAt(int index)
 			throw exception("Index (removeAt(index)) is negative");
 		if (index >= Size)
 			throw exception("Index (removeAt(index)) is bigger than list size");
-		Node<T>* previous = this->head;
+		Node<T>* pPrev = this->head;
 		for (int i = 0; i < index - 1; i++)
-			previous = previous->pNext;
-		Node<T>* toDelete = previous->pNext;
+			pPrev = pPrev->pNext;
+		Node<T>* toDelete = pPrev->pNext;
 		if (index != Size - 1)
 		{
 			Node<T>* nex = toDelete->pNext;
-			nex->pPrevious = previous;
+			nex->pPrev = pPrev;
 		}
 		else
-			tail = previous;
-		previous->pNext = toDelete->pNext;
+			tail = pPrev;
+		pPrev->pNext = toDelete->pNext;
 		delete toDelete;
 		Size--;
 	}
@@ -252,7 +252,7 @@ bool List<T>::isEmpty()
 }
 
 template<typename T>
-int List<T>::find_last(List<T>& search)
+int List<T>::search_lastest(List<T>& search)
 {
 	if (Size == 0)
 		throw exception("Main list contains 0 items, findlast() didn't work");
@@ -261,34 +261,34 @@ int List<T>::find_last(List<T>& search)
 	if (search.GetSize() == 0)
 		throw exception("Included list contains 0 items, findlast() didn't work");
 	Node<T>* field = this->tail;
-	int steps = 0;
-	bool match = false;
+	int Count_step = 0;
+	bool Comparison = false;
 	for (int i = Size - 1; i >= 0; i--)
 	{
 		if (field->data == search[search.GetSize() - 1])
 		{
-			steps = 0;
+			Count_step = 0;
 			for (int j = search.GetSize() - 2; j >= 0; j--)
 			{
-				steps++;
-				field = field->pPrevious;
+				Count_step++;
+				field = field->pPrev;
 				if (field->data != search[j])
 				{
-					match = false;
-					for (int k = 0; k < steps; k++)
+					Comparison = false;
+					for (int k = 0; k < Count_step; k++)
 						field = field->pNext;
-					steps = 0;
+					Count_step = 0;
 					break;
 				}
 				if (j == 0)
-					match = true;
+					Comparison = true;
 			}
-			if ((match == true) || (search.GetSize() == 1))
+			if ((Comparison == true) || (search.GetSize() == 1))
 			{
-				return (i - steps);
+				return (i - Count_step);
 			}
 		}
-		field = field->pPrevious;
+		field = field->pPrev;
 	}
 	return -1;
 }

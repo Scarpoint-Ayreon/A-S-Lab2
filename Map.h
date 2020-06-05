@@ -29,10 +29,10 @@ public:
 	T1 find(T0 key);
 	bool change(T0 key, T1 NewValue);
 	void clear();
-	void printTree();
-	void printList();
+	void input_Tree();
+	void input_List();
 
-	void SetColor(int text, int background)
+	void Paint(int text, int background)
 	{
 		HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 		SetConsoleTextAttribute(hStdOut, (WORD)((background << 4) | text));
@@ -43,14 +43,14 @@ public:
 		map.clear();
 		if (size == 0)
 			return;
-		keyFill(map, root);
+		Key_populate(map, root);
 	}
 	void get_values(List<T1>& map)
 	{
 		map.clear();
 		if (size == 0)
 			return;
-		valueFill(map, root);
+		Value_populate(map, root);
 	}
 
 private:
@@ -77,19 +77,19 @@ private:
 		}
 	};
 
-	void printTree(int index, int spaces, Node<T0, T1>* q);
-	void printList(Node<T0, T1>* current);
+	void input_Tree(int index, int places, Node<T0, T1>* q);
+	void input_List(Node<T0, T1>* current);
 
 	void insert(Node<T0, T1>* parent, T0 key, T1 value);
-	void uncleCheck(Node<T0, T1>* node);
+	void Check_uncle(Node<T0, T1>* node);
 
 	void remove(Node<T0, T1>* node);
 	void removeFIX(Node<T0, T1>* node, bool leafs);
 
 	void clear(Node<T0, T1>* node);
 
-	void keyFill(List<T0>& lst, Node<T0, T1>* current);
-	void valueFill(List<T1>& lst, Node<T0, T1>* current);
+	void Key_populate(List<T0>& lst, Node<T0, T1>* current);
+	void Value_populate(List<T1>& lst, Node<T0, T1>* current);
 
 
 	Node<T0, T1>* root;
@@ -128,38 +128,38 @@ void Map<T0, T1>::insert(T0 key, T1 value)
 
 
 template <typename T0, typename T1>
-void Map<T0, T1>::printTree()
+void Map<T0, T1>::input_Tree()
 {
 	int index = 0;
-	int spaces = 0;
+	int places = 0;
 
 	if (index < size)
 	{
-		printTree(index, spaces + 4, root->right);
-		SetColor(15, 0);
+		input_Tree(index, places + 4, root->right);
+		Paint(15, 0);
 		cout << root->key;
-		SetColor(0, 15);
+		Paint(0, 15);
 
 		cout << endl;
-		SetColor(15, 0);
+		Paint(15, 0);
 		cout << root->value;
-		SetColor(0, 15);
+		Paint(0, 15);
 		cout << endl;
-		printTree(index, spaces + 4, root->left);
+		input_Tree(index, places + 4, root->left);
 		index++;
 	}
 }
 
 template<typename T0, typename T1>
-void Map<T0, T1>::printList()
+void Map<T0, T1>::input_List()
 {
 	if (size == 0)
 		return;
-	printList(root->left);
+	input_List(root->left);
 
 	cout << root->key << " - " << root->value << endl;
 
-	printList(root->right);
+	input_List(root->right);
 }
 
 template <typename T0, typename T1>
@@ -235,72 +235,72 @@ void Map<T0, T1>::clear()
 
 
 template <typename T0, typename T1>
-void Map<T0, T1>::printTree(int index, int spaces, Node<T0, T1>* q)
+void Map<T0, T1>::input_Tree(int index, int places, Node<T0, T1>* q)
 {
 	if (index < size)
 	{
 		if (q != leaf)
-			printTree(index, spaces + 4, q->right);
-		for (int i = 0; i < spaces; i++) {
-			SetColor(0, 15);
+			input_Tree(index, places + 4, q->right);
+		for (int i = 0; i < places; i++) {
+			Paint(0, 15);
 			cout << ' ';
 		}
 		if (q->color == BLACK)
 		{
-			SetColor(15, 0);
+			Paint(15, 0);
 			if (q == leaf)
 				cout << "leaf";
 			else
 			{
-				SetColor(15, 0);
+				Paint(15, 0);
 				cout << q->key;
-				SetColor(0, 15);
+				Paint(0, 15);
 				cout << endl;
-				for (int i = 0; i < spaces; i++) {
-					SetColor(0, 15);
+				for (int i = 0; i < places; i++) {
+					Paint(0, 15);
 					cout << ' ';
 				}
-				SetColor(15, 0);
+				Paint(15, 0);
 				cout << q->value;
-				SetColor(0, 15);
+				Paint(0, 15);
 			}
-			SetColor(0, 15);
+			Paint(0, 15);
 			cout << endl;
 		}
 		else
 		{
-			SetColor(15, 4);
+			Paint(15, 4);
 			cout << q->key;
-			SetColor(0, 15);
+			Paint(0, 15);
 			cout << endl;
-			for (int i = 0; i < spaces; i++) {
-				SetColor(0, 15);
+			for (int i = 0; i < places; i++) {
+				Paint(0, 15);
 				cout << ' ';
 			}
-			SetColor(15, 4);
+			Paint(15, 4);
 			cout << q->value;
-			SetColor(0, 15);
+			Paint(0, 15);
 			cout << endl;
 		}
 
 
 		if (q != leaf)
-			printTree(index, spaces + 4, q->left);
+			input_Tree(index, places + 4, q->left);
 		if (q != leaf)
 			index++;
 	}
 }
 
 template<typename T0, typename T1>
-void Map<T0, T1>::printList(Node<T0, T1>* current)
+void Map<T0, T1>::input_List(Node<T0, T1>* current)
 {
 	if (current == leaf)
 		return;
-	printList(current->left);
+	input_List(current->left);
 
 	cout << current->key << " - " << current->value << endl;
 
-	printList(current->right);
+	input_List(current->right);
 }
 
 template <typename T0, typename T1>
@@ -317,7 +317,7 @@ void Map<T0, T1>::insert(Node<T0, T1>* parent, T0 key, T1 value)
 			parent->left = new Node<T0, T1>(key, value, parent, leaf, leaf);
 			size++;
 			if (parent->color == RED)
-				uncleCheck(parent->left);
+				Check_uncle(parent->left);
 		}
 	}
 	else
@@ -329,14 +329,14 @@ void Map<T0, T1>::insert(Node<T0, T1>* parent, T0 key, T1 value)
 			parent->right = new Node<T0, T1>(key, value, parent, leaf, leaf);
 			size++;
 			if (parent->color == RED)
-				uncleCheck(parent->right);
+				Check_uncle(parent->right);
 		}
 	}
 }
 
 
 template <typename T0, typename T1>
-void Map<T0, T1>::uncleCheck(Node<T0, T1>* node)
+void Map<T0, T1>::Check_uncle(Node<T0, T1>* node)
 {
 	Node<T0, T1>* parent = node->parent;
 	Node<T0, T1>* grandparent = parent->parent;
@@ -353,7 +353,7 @@ void Map<T0, T1>::uncleCheck(Node<T0, T1>* node)
 				return;
 			grandparent->color = RED;
 			if (grandparent->parent->color == RED)
-				uncleCheck(grandparent);
+				Check_uncle(grandparent);
 		}
 		else
 		{
@@ -413,7 +413,7 @@ void Map<T0, T1>::uncleCheck(Node<T0, T1>* node)
 				return;
 			grandparent->color = RED;
 			if (grandparent->parent->color == RED)
-				uncleCheck(grandparent);
+				Check_uncle(grandparent);
 		}
 		else
 		{
@@ -430,7 +430,7 @@ void Map<T0, T1>::uncleCheck(Node<T0, T1>* node)
 				parent = parent->parent;
 			}
 
-			Node<T0, T1>* sibling = parent->left;
+			Node<T0, T1>* Family_member = parent->left;
 
 			grandparent->right = parent->left;
 			if (grandparent->right != leaf)
@@ -605,83 +605,83 @@ void Map<T0, T1>::removeFIX(Node<T0, T1>* node, bool leafs)
 
 
 	Node<T0, T1>* grandparent = parent->parent;
-	Node<T0, T1>* sibling;
+	Node<T0, T1>* Family_member;
 	if (leafs == true)
 	{
 		if (nodeLeft)
-			sibling = parent->right;
+			Family_member = parent->right;
 		else
-			sibling = parent->left;
+			Family_member = parent->left;
 	}
 	else
 	{
 		if (node == parent->left)
 		{
 			nodeLeft = true;
-			sibling = parent->right;
+			Family_member = parent->right;
 		}
 
 		else
 		{
 			nodeLeft = false;
-			sibling = parent->left;
+			Family_member = parent->left;
 		}
 	}
 
-	Node<T0, T1>* SL = sibling->left;
-	Node<T0, T1>* SR = sibling->right;
+	Node<T0, T1>* SL = Family_member->left;
+	Node<T0, T1>* SR = Family_member->right;
 
 
-	if (sibling->color == RED)
+	if (Family_member->color == RED)
 	{
-		parent->parent = sibling;
+		parent->parent = Family_member;
 		SL->parent = parent;
 
 
 		if (root == parent)
 		{
-			root = sibling;
-			sibling->parent = nullptr;
+			root = Family_member;
+			Family_member->parent = nullptr;
 		}
 		else
 		{
 			if (grandparent->left == parent)
-				grandparent->left = sibling;
+				grandparent->left = Family_member;
 			else
-				grandparent->right = sibling;
-			sibling->parent = grandparent;
+				grandparent->right = Family_member;
+			Family_member->parent = grandparent;
 		}
 
 		if (nodeLeft == true)
 		{
 			parent->right = SL;
-			sibling->left = parent;
+			Family_member->left = parent;
 		}
 		else
 		{
 			parent->left = SL;
-			sibling->right = parent;
+			Family_member->right = parent;
 		}
 
 		parent->color = RED;
-		sibling->color = BLACK;
+		Family_member->color = BLACK;
 
-		sibling = SL;
-		SL = sibling->left;
-		SR = sibling->right;
+		Family_member = SL;
+		SL = Family_member->left;
+		SR = Family_member->right;
 	}
 
-	if (parent->color == BLACK && sibling->color == BLACK && SL->color == BLACK && SR->color == BLACK) 
+	if (parent->color == BLACK && Family_member->color == BLACK && SL->color == BLACK && SR->color == BLACK) 
 	{
-		sibling->color = RED;
+		Family_member->color = RED;
 		removeFIX(parent, false);
 		return;
 	}
 
-	if (sibling->color == BLACK && SL->color == BLACK && SR->color == BLACK && parent->color == RED)
+	if (Family_member->color == BLACK && SL->color == BLACK && SR->color == BLACK && parent->color == RED)
 	{
 		parent->color = BLACK;
-		sibling->color = RED;
+		Family_member->color = RED;
 		return;
 	}
 
@@ -691,38 +691,38 @@ void Map<T0, T1>::removeFIX(Node<T0, T1>* node, bool leafs)
 		{
 			SL->parent = parent;
 			parent->right = SL;
-			SL->right->parent = sibling;
-			sibling->left = SL->right;
-			SL->right = sibling;
-			sibling->parent = SL;
+			SL->right->parent = Family_member;
+			Family_member->left = SL->right;
+			SL->right = Family_member;
+			Family_member->parent = SL;
 			SL->color = BLACK;
-			sibling->color = RED;
-			sibling = SL;
+			Family_member->color = RED;
+			Family_member = SL;
 			SL = SL->left;
-			SR = sibling;
+			SR = Family_member;
 		}
 
 		if (SR->color == RED)
 		{
-			sibling->color = parent->color;
+			Family_member->color = parent->color;
 			parent->color = BLACK;
 			SR->color = BLACK;
 			parent->right = SL;
 			SL->parent = parent;
-			sibling->left = parent;
-			parent->parent = sibling;
+			Family_member->left = parent;
+			parent->parent = Family_member;
 			if (root == parent)
 			{
-				root = sibling;
-				sibling->parent = nullptr;
+				root = Family_member;
+				Family_member->parent = nullptr;
 			}
 			else
 			{
-				sibling->parent = grandparent;
+				Family_member->parent = grandparent;
 				if (grandparent->left == parent)
-					grandparent->left = sibling;
+					grandparent->left = Family_member;
 				else
-					grandparent->right = sibling;
+					grandparent->right = Family_member;
 			}
 		}
 	}
@@ -732,38 +732,38 @@ void Map<T0, T1>::removeFIX(Node<T0, T1>* node, bool leafs)
 		{
 			SR->parent = parent;
 			parent->left = SR;
-			SR->left->parent = sibling;
-			sibling->right = SR->left;
-			SR->left = sibling;
-			sibling->parent = SR;
+			SR->left->parent = Family_member;
+			Family_member->right = SR->left;
+			SR->left = Family_member;
+			Family_member->parent = SR;
 			SR->color = BLACK;
-			sibling->color = RED;
-			sibling = SR;
-			SL = sibling;
+			Family_member->color = RED;
+			Family_member = SR;
+			SL = Family_member;
 			SR = SR->right;
 		}
 
 		if (SL->color == RED)
 		{
-			sibling->color = parent->color;
+			Family_member->color = parent->color;
 			parent->color = BLACK;
 			SL->color = BLACK;
 			parent->left = SR;
 			SR->parent = parent;
-			sibling->right = parent;
-			parent->parent = sibling;
+			Family_member->right = parent;
+			parent->parent = Family_member;
 			if (root == parent)
 			{
-				root = sibling;
-				sibling->parent = nullptr;
+				root = Family_member;
+				Family_member->parent = nullptr;
 			}
 			else
 			{
-				sibling->parent = grandparent;
+				Family_member->parent = grandparent;
 				if (grandparent->left == parent)
-					grandparent->left = sibling;
+					grandparent->left = Family_member;
 				else
-					grandparent->right = sibling;
+					grandparent->right = Family_member;
 			}
 		}
 	}
@@ -786,21 +786,21 @@ void Map<T0, T1>::clear(Node<T0, T1>* node)
 }
 
 template <typename T0, typename T1>
-void Map<T0, T1>::keyFill(List<T0>& lst, Node<T0, T1>* current)
+void Map<T0, T1>::Key_populate(List<T0>& lst, Node<T0, T1>* current)
 {
 	if (current == leaf)
 		return;
-	keyFill(lst, current->left);
+	Key_populate(lst, current->left);
 	lst.push_back(current->key);
-	keyFill(lst, current->right);
+	Key_populate(lst, current->right);
 }
 
 template <typename T0, typename T1>
-void Map<T0, T1>::valueFill(List<T1>& lst, Node<T0, T1>* current)
+void Map<T0, T1>::Value_populate(List<T1>& lst, Node<T0, T1>* current)
 {
 	if (current == leaf)
 		return;
-	valueFill(lst, current->left);
+	Value_populate(lst, current->left);
 	lst.push_back(current->value);
-	valueFill(lst, current->right);
+	Value_populate(lst, current->right);
 }

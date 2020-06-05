@@ -2,14 +2,14 @@
 
 #include <C:\Users\user\Desktop\lab2\lab2\Map.h>
 
-class Algoritm
+class Alg_Shanon_Fano
 {
 public:
-	string encode(string toEncode);
-	string encodeReview(string toEncode);
-	void printCodes();
-	string decode(string toDecode);
-	string decodeReview(string toDecode);
+	string coding(string tocoding);
+	string coding_Info(string tocoding);
+	void Input_Code();
+	string decoding(string todecoding);
+	string decoding_info(string todecoding);
 
 private:
 	struct Node
@@ -26,7 +26,7 @@ private:
 	List<Node> alphabet;
 };
 
-string Algoritm::encode(string input)
+string Alg_Shanon_Fano::coding(string input)
 {
 	Map<char, unsigned int> composition;
 	for (unsigned int i = 0; i < input.size(); ++i)
@@ -154,7 +154,7 @@ string Algoritm::encode(string input)
 	return answer;
 }
 
-string Algoritm::encodeReview(string input)
+string Alg_Shanon_Fano::coding_Info(string input)
 {
 	Map<char, unsigned int> composition;
 	for (unsigned int i = 0; i < input.size(); ++i)
@@ -168,29 +168,29 @@ string Algoritm::encodeReview(string input)
 	}
 	cout << input << endl;
 	cout << "Contains:" << endl;
-	composition.printList();
+	composition.input_List();
 
-	string answer = encode(input);
+	string answer = coding(input);
 
 	short preWeight = input.size() * 8;
 	double postweight = answer.size();
 	auto rate = (1 - postweight / preWeight) * 100;
 	cout << "Initial text weight: " << preWeight << " bytes, code weight: " << postweight << " bytes, compression rate: " << rate << " %" << endl;
 
-	cout << endl << "Encoded:" << endl << answer << endl;
+	cout << endl << "codingd:" << endl << answer << endl;
 	return answer;
 }
 
-void Algoritm::printCodes()
+void Alg_Shanon_Fano::Input_Code()
 {
 	for (unsigned int i = 0; i < alphabet.GetSize(); i++)
 		cout << alphabet[i].name << " - " << alphabet[i].code << endl;
 }
 
-string Algoritm::decode(string input)
+string Alg_Shanon_Fano::decoding(string input)
 {
 	if (alphabet.GetSize() == 0)
-		throw exception("Attempt to decode without alphabet");
+		throw exception("Attempt to decoding without alphabet");
 	string current;
 	string answer;
 	while (input.size() > 0)
@@ -207,22 +207,22 @@ string Algoritm::decode(string input)
 			}
 
 	}
-	throw exception("Couldn't decode");
+	throw exception("Couldn't decoding");
 }
 
-string Algoritm::decodeReview(string input)
+string Alg_Shanon_Fano::decoding_info(string input)
 {
-	string answer = decode(input);
+	string answer = decoding(input);
 	short preWeight = answer.size() * 8;
 	double postweight = input.size();
 	auto rate = (1 - postweight / preWeight) * 100;
 	cout << "Initial text weight: " << preWeight << " bytes, code weight: " << postweight << " bytes, compression rate: " << rate << " %" << endl;
 
-	cout << endl << "Decoded:" << endl << answer << endl;
+	cout << endl << "decodingd:" << endl << answer << endl;
 	return answer;
 }
 
-void Algoritm::coder(Node& node, string code)
+void Alg_Shanon_Fano::coder(Node& node, string code)
 {
 	if (node.name.size() == 1)
 	{

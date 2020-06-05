@@ -7,8 +7,8 @@ int main()
 {
 	system("color F0");
 	string input = "string for test";
-	Algoritm encryptor;
-	string code = encryptor.encodeReview(input);
-	encryptor.printCodes();
-	encryptor.decodeReview(code);
+	Alg_Shanon_Fano encryptor;
+	string code = encryptor.coding_Info(input);
+	encryptor.Input_Code();
+	encryptor.decoding_info(code);
 }
